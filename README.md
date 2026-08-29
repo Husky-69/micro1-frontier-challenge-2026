@@ -1,29 +1,23 @@
-# micro1 Frontier Engineering Challenge 2026
+# Code Quality Agent: Is this repository actually good?
 
-## The User & Their Bottleneck
-
-_(To be filled after problem PDF drops on Aug 28)_
+## The User & Bottleneck
+Engineering teams and investors often need to evaluate a code repository before adopting or purchasing it. The bottleneck is that READMEs and demos are misleading; true quality lies in test coverage, code complexity, and dependency health. Manually auditing this takes 10+ hours per repo.
 
 ## Why This Matters
-
-_(To be filled)_
+A bad codebase introduces massive technical debt. Solving this allows teams to make data-driven decisions in minutes, not days.
 
 ## Baseline Solution
-
-Simple, single-shot approach. See `src/baseline/naive_solution.py`.
+A simple script that counts lines of code and checks for a README. (See `src/baseline/naive_solution.py`). It fails because it equates "more code" with "better code".
 
 ## Advanced Agentic Solution
-
-Multi-step, self-correcting agent with human-in-the-loop checkpoints. See `src/advanced/agentic_solution.py`.
+A LangGraph agent that clones the repo and uses specialized tools to analyze cyclomatic complexity, verify test directories, and check dependency health. It includes a Human-in-the-Loop checkpoint before executing analysis.
 
 ## Improvement Changelog
-
-See [CHANGELOG.md](./CHANGELOG.md)
+- **Baseline:** Simple file counting. Result: Inaccurate quality scores.
+- **Iteration 1:** Added `check_test_coverage`. Result: Caught repos with no tests.
+- **Iteration 2:** Added `analyze_code_complexity` using Radon. Result: Differentiated between clean code and messy "spaghetti" code.
+- **Final:** Combined tools into a unified report.
 
 ## Main Failure Mode & Hot Take
-
-_(To be filled)_
-
-## Reproduction
-
-See [reproduction_guide.md](./reproduction_guide.md)
+**Failure Mode:** The agent initially tried to run `pytest` on every repo, which crashed due to missing environment dependencies. 
+**Hot Take:** Agents need *static analysis* tools (like Radon) rather than *execution* tools for initial code audits. Execution is too fragile for unknown environments.
