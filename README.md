@@ -4,15 +4,15 @@
 
 ## The User & Their Bottleneck
 
-Engineering teams, investors, and open-source maintainers regularly need to judge the quality of a repository they didn't build — before adopting it, contributing to it, or acquiring it. A README and a working demo tell you almost nothing about the code underneath: test coverage, cyclomatic complexity, dependency health, and technical debt are invisible unless someone manually opens the codebase and digs. That manual audit typically takes hours, and different reviewers looking at the same signals can reach different conclusions, so decisions end up resting on incomplete or inconsistent judgment.
+Engineering teams, investors, and open-source maintainers regularly need to judge the quality of a repository they didn't build, before adopting it, contributing to it, or acquiring it. A README and a working demo tell you almost nothing about the code underneath: test coverage, cyclomatic complexity, dependency health, and technical debt are invisible unless someone manually opens the codebase and digs. That manual audit typically takes hours, and different reviewers looking at the same signals can reach different conclusions, so decisions end up resting on incomplete or inconsistent judgment.
 
 ## Why This Matters
 
-A bad codebase hides real cost: technical debt that slows every future change, dependency risk that surfaces later as security or maintenance problems, and negotiating positions (in an acquisition or contribution decision) based on guesswork rather than evidence. A system that turns "does this look reasonable?" into a repeatable, evidence-backed score in seconds — rather than hours — changes how confidently that decision gets made.
+A bad codebase hides real cost: technical debt that slows every future change, dependency risk that surfaces later as security or maintenance problems, and negotiating positions (in an acquisition or contribution decision) based on guesswork rather than evidence. A system that turns "does this look reasonable?" into a repeatable, evidence-backed score in seconds, rather than hours, changes how confidently that decision gets made.
 
 ## Baseline Solution
 
-A naive script (`src/baseline/naive_solution.py`) that scores a repository purely on volume: file count, total lines of code, and whether a `README.md` exists. It has no way to tell a large, well-tested library from a large, untested one — it just rewards size.
+A naive script (`src/baseline/naive_solution.py`) that scores a repository purely on volume: file count, total lines of code, and whether a `README.md` exists. It has no way to tell a large, well-tested library from a large, untested one, it just rewards size.
 
 ## Advanced Agentic Solution
 
@@ -36,7 +36,7 @@ The agent is instructed not to guess: it must call the tools, synthesize their o
 **Baseline ranking:** black > requests > public-apis — the top two are swapped.
 **Agent ranking:** requests > black > public-apis — matches ground truth exactly.
 
-The baseline conflates codebase size with quality: `black`'s much larger file/LOC count earns it a perfect score despite a thin test-to-source ratio (15 test files for 345 source files). The agent's tool-based evidence — complexity, real test presence, dependency management — produces a ranking that matches expert judgment exactly. Measured as pairwise ranking accuracy across all 3 repositories, the baseline gets 2 of 3 orderings right (67%); the agent gets 3 of 3 (100%).
+The baseline conflates codebase size with quality: `black`'s much larger file/LOC count earns it a perfect score despite a thin test-to-source ratio (15 test files for 345 source files). The agent's tool-based evidence: complexity, real test presence, dependency management, produces a ranking that matches expert judgment exactly. Measured as pairwise ranking accuracy across all 3 repositories, the baseline gets 2 of 3 orderings right (67%); the agent gets 3 of 3 (100%).
 
 ## Improvement Changelog
 
@@ -44,7 +44,7 @@ See [CHANGELOG.md](./CHANGELOG.md)
 
 ## Main Failure Mode & Hot Take
 
-**Failure mode:** The agent's reasoning was correct from the start — it consistently chose to call `analyze_code_complexity`, `check_test_coverage`, and `check_dependency_health` by name. But the graph's tool-execution node was hardcoded to route every tool call through a single function (`execute_consequential_action`) regardless of which tool the model actually requested, and returned a generic `"Success"` message instead of real data. The agent had no way to know its tools weren't actually running — it just kept retrying, assuming a transient failure.
+**Failure mode:** The agent's reasoning was correct from the start, it consistently chose to call `analyze_code_complexity`, `check_test_coverage`, and `check_dependency_health` by name. But the graph's tool-execution node was hardcoded to route every tool call through a single function (`execute_consequential_action`) regardless of which tool the model actually requested, and returned a generic `"Success"` message instead of real data. The agent had no way to know its tools weren't actually running, it just kept retrying, assuming a transient failure.
 
 **Hot take:** An agent can reason correctly about *which* tool to call and still produce worthless output if the execution layer beneath it silently discards that reasoning. Trajectory logging caught this immediately once we looked at it — but if we'd only looked at the final score (a plausible-sounding number) instead of the underlying tool outputs, this bug would have shipped invisibly. Verification needs to check that tools *actually ran*, not just that the agent *called* them.
 
