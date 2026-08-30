@@ -4,11 +4,15 @@
 
 ## The User & Their Bottleneck
 
-Engineering teams, investors, and open-source maintainers regularly need to judge the quality of a repository they didn't build, before adopting it, contributing to it, or acquiring it. A README and a working demo tell you almost nothing about the code underneath: test coverage, cyclomatic complexity, dependency health, and technical debt are invisible unless someone manually opens the codebase and digs. That manual audit typically takes hours, and different reviewers looking at the same signals can reach different conclusions, so decisions end up resting on incomplete or inconsistent judgment.
+Picture a team about to adopt an open-source library, or an investor about to buy a piece of software. Neither one wrote the code. Both need to know: is it actually good?
+
+Right now, that's guesswork. A README looks nice. A demo runs smoothly. But neither tells you what's underneath, is the code well-tested? Is it a tangled mess or a clean one? Are the dependencies safe and current? To find out, someone has to open the codebase and dig by hand. That takes hours. And two people digging through the same repo can walk away with two different opinions.
 
 ## Why This Matters
 
-A bad codebase hides real cost: technical debt that slows every future change, dependency risk that surfaces later as security or maintenance problems, and negotiating positions (in an acquisition or contribution decision) based on guesswork rather than evidence. A system that turns "does this look reasonable?" into a repeatable, evidence-backed score in seconds, rather than hours, changes how confidently that decision gets made.
+Bad code doesn't announce itself. It hides. Then, months later, it shows up as a security hole, a dependency nobody dares update, or a "simple" feature that takes three times longer than it should. If you're negotiating a price to acquire that code, or deciding whether to build your product on top of it, you're negotiating blind.
+
+What this project does: it turns "does this codebase look okay?" into a real, evidence-backed score, in seconds, not hours. Same question, but now with proof behind the answer.
 
 ## Baseline Solution
 
