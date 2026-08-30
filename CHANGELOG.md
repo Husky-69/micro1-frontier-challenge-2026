@@ -1,15 +1,13 @@
 # Improvement Changelog
 
-## Iteration 0 — Baseline
+| Stage | What I Tried and Why | Evidence | Decision / Learning |
+|---|---|---|---|
+| **Baseline** | Naive script scoring repos by file count, lines of code, and README presence. It was the simplest reasonable way to "measure" a repo without reading it. | `requests` 8/10, `black` 10/10, `public-apis` 5/10 — `black` outscored `requests` purely on volume. | Established the starting point. Confirmed the intended flaw: size is not quality. |
+| **Iteration 1** | Added three real analysis tools: `analyze_code_complexity` (radon), `check_test_coverage`, `check_dependency_health`, bound to the LangGraph agent. | First run produced only generic "Success: Action executed safely in sandbox" messages instead of real data for every tool the agent tried to call. | Kept the tools, but surfaced a deeper bug: the agent's tool choice wasn't reaching execution. |
+| **Iteration 2** | Traced the bug to `graph.py`: `llm.bind_tools([...])` only ever bound one tool (`execute_consequential_action`), and the tool-execution node hardcoded routing to that same function regardless of which tool name the model actually requested. Fixed by binding all four tools and dispatching by `tool_call["name"]`. | Re-running on `repo_high_quality` produced a fully evidence-based assessment: 2.66 avg cyclomatic complexity, 13 test files, `pyproject.toml` present — score 9/10 with real justification. | Kept. This was the single highest-impact fix in the project. |
+| **Iteration 3** | Discovered `agentic_solution.py` had a hardcoded `repo_to_evaluate = "test_repos/repo_high_quality"` and a hardcoded `run_id`, so every run — regardless of the path passed on the command line, analyzed the same repo and wrote to the same trajectory file. Rewrote the script to accept `<repo_path> <run_id>` as arguments, and updated `TrajectoryLogger` with a `set_run()` method so `graph.py` switches trajectory files whenever a new `run_id` appears. | Re-ran all three repos; each printed the correct "Evaluating: ..." line and produced a distinct `trajectories/run_*_trajectory.md` file. | Kept. Without this fix, the "three repos, three trajectories" reproducibility requirement would have silently failed. |
+| **Final** | Combined all fixes. Ran the agent against all 3 test repos. | `requests` 9/10, `black` 7/10, `public-apis` 3/10 : ranking matches ground truth (High > Medium > Low) exactly, vs. the baseline's 67% pairwise accuracy. | Identified the main contribution: replacing "how much code exists" with "how complex, tested, and dependency-managed is it" turns a misleading baseline into an accurate one. |
 
-- **Date:** TBD
-- **Change:** Initial naive implementation
-- **Evidence:** [link to test output]
-- **Failure observed:** [to be filled]
+## Known Issue (Unresolved)
 
-## Iteration 1 — [Title]
-
-- **Date:** TBD
-- **Change:**
-- **Evidence:**
-- **Failure observed:**
+On the `repo_low_quality` run, the human-approval checkpoint for `execute_consequential_action` occasionally fires twice with an identical prompt. Does not affect the final score or evidence gathered, but indicates a retry/loop edge case in the graph worth investigating.

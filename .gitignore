@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Test repos cloned for evaluation (see reproduction_guide.md)
+test_repos/

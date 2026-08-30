@@ -1,0 +1,23 @@
+[
+    {
+        "repo": "repo_high_quality",
+        "baseline_score": 8,
+        "python_files": 37,
+        "lines_of_code": 12032,
+        "has_readme": true
+    },
+    {
+        "repo": "repo_medium_quality",
+        "baseline_score": 10,
+        "python_files": 345,
+        "lines_of_code": 133659,
+        "has_readme": true
+    },
+    {
+        "repo": "repo_low_quality",
+        "baseline_score": 5,
+        "python_files": 6,
+        "lines_of_code": 1193,
+        "has_readme": true
+    }
+]
