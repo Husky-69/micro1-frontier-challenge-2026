@@ -219,3 +219,4 @@ __marimo__/
 
 # Test repos cloned for evaluation (see reproduction_guide.md)
 test_repos/
+trajectories/competition_run_01_trajectory.md

@@ -32,6 +32,7 @@ llm_with_tools = llm.bind_tools([
     tools.analyze_code_complexity,
     tools.check_test_coverage,
     tools.check_dependency_health,
+    tools.check_maintenance_health,
 ])
 
 # Map tool names to their real callables, for correct dispatch
@@ -39,6 +40,7 @@ TOOL_MAP = {
     "analyze_code_complexity": tools.analyze_code_complexity,
     "check_test_coverage": tools.check_test_coverage,
     "check_dependency_health": tools.check_dependency_health,
+    "check_maintenance_health": tools.check_maintenance_health,
 }
 
 
