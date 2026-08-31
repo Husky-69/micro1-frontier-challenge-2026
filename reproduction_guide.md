@@ -48,7 +48,7 @@ python -m src.advanced.agentic_solution test_repos/repo_low_quality run_low_qual
 
 **Expected output:** each run prints an evidence-based quality assessment covering four dimensions: code complexity, test coverage, dependency health, and maintenance health (contributor concentration and days since last commit) — ending in a Quality Score out of 10. Expected scores: `requests` → 9/10, `black` → 7/10, `public-apis` → 3/10.
 
-Note: the `public-apis` run may trigger one or more `[⚠️ HUMAN CHECKPOINT]` prompts — type `yes` to approve and let the agent continue.
+Note: the `public-apis` run may trigger one or more `[⚠️ HUMAN CHECKPOINT]` prompts: type `yes` to approve and let the agent continue if this happens. This became less frequent once all four analysis tools were available.
 
 ## 5. View the Trajectories
 
