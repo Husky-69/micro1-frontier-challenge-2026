@@ -41,7 +41,7 @@ The agent is instructed not to guess: it must call the tools, synthesize their o
 **Baseline ranking:** black > requests > public-apis — the top two are swapped.
 **Agent ranking:** requests > black > public-apis — matches ground truth exactly.
 
-The baseline conflates codebase size with quality: `black`'s much larger file/LOC count earns it a perfect score despite a thin test-to-source ratio (15 test files for 345 source files). The agent's tool-based evidence — complexity, real test presence, dependency management — produces a ranking that matches expert judgment exactly. Measured as pairwise ranking accuracy across all 3 repositories, the baseline gets 2 of 3 orderings right (67%); the agent gets 3 of 3 (100%).
+The baseline conflates codebase size with quality: `black`'s much larger file/LOC count earns it a perfect score despite a thin test-to-source ratio (15 test files for 345 source files). The agent's tool-based evidence — complexity, real test presence, dependency management, produces a ranking that matches expert judgment exactly. Measured as pairwise ranking accuracy across all 3 repositories, the baseline gets 2 of 3 orderings right (67%); the agent gets 3 of 3 (100%).
 
 **Maintenance Health (contributor concentration + staleness):** a 4th signal tests/complexity/dependencies, added to catch bus-factor risk the other three checks can't see on their own. On these 3 test repos it didn't flip any final scores — `requests`, `black`, and `public-apis` are all large, actively-maintained projects with well-distributed contributor bases, but it gives the agent's assessment a dimension none of the other checks cover, and would matter on a smaller or single-maintainer repository.
 
