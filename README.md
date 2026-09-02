@@ -2,7 +2,7 @@
 
 **micro1 Agentic Workflows Hackathon — August 2026**
 
-## The User & Their Bottleneck
+## The User Bottleneck
 
 Picture a team about to adopt an open-source library, or an investor about to buy a piece of software. Neither one wrote the code. Both need to know: is it actually good?
 
